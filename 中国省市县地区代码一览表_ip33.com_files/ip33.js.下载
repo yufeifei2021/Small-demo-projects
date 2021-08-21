@@ -1,0 +1,231 @@
+﻿
+//欢迎
+console.log("ip33.com为您提供优质的在线工具~~~");
+
+//强制跳转到http
+if (window.location.protocol != 'http:') {
+    window.location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
+}
+
+$.IpToInt = function (ip) {
+    var REG = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+    var result = REG.exec(ip);
+    if (!result) return "";
+
+    return (parseInt(result[1]) << 24
+        | parseInt(result[2]) << 16
+        | parseInt(result[3]) << 8
+        | parseInt(result[4])) >>> 0;
+}
+
+String.prototype.padLeft = function (padChar, width) {
+    var ret = this;
+    while (ret.length < width) {
+        if (ret.length + padChar.length < width) {
+            ret = padChar + ret;
+        }
+        else {
+            ret = padChar.substring(0, width - ret.length) + ret;
+        }
+    }
+    return ret;
+};
+
+String.prototype.padRight = function (padChar, width) {
+    var ret = this;
+    while (ret.length < width) {
+        if (ret.length + padChar.length < width) {
+            ret += padChar;
+        }
+        else {
+            ret += padChar.substring(0, width - ret.length);
+        }
+    }
+    return ret;
+};
+
+String.prototype.startWith = function (str) {
+    var reg = new RegExp("^" + str);
+    return reg.test(this);
+}
+
+String.prototype.endWith = function (str) {
+    var reg = new RegExp(str + "$");
+    return reg.test(this);
+}
+
+function formatHex(s) {
+    var n = "";
+    s = s.replace(/ ([0-9A-Fa-f]) /g, " 0$1 ");
+    s = s.replace(/\s/g, "");
+    for (var i = 0; i < s.length; i++) {
+        n += s[i];
+        if (i % 2 == 1 && i != s.length - 1) {
+            n += " ";
+        }
+    }
+    return n;
+}
+
+function hexToAscii(hex) {
+    if (hex == "") {
+        return "";
+    }
+    var ascii = "";
+    var hexs = hex.split(" ");
+    for (var i = 0; i < hexs.length; i++) {
+        var c = String.fromCharCode("0x" + hexs[i]);
+        ascii += c;
+    }
+    return ascii;
+}
+
+function asciiToHex(ascii) {
+    if (ascii == "") {
+        return "";
+    }
+    var hex = '';
+    for (var i = 0; i < ascii.length; i++) {
+        var c = ascii.charCodeAt(i);
+        hex += c.toString(16).padLeft('0', 2);
+        hex += " ";
+    }
+    return hex;
+}
+
+//百度统计
+var _hmt = _hmt || [];
+(function () {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?4160757ad507e7c407d858938df362d6";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+
+
+
+//反射服务器方法
+$.Invoke = function () {
+
+    var api = "//api.ip33.com";
+
+    //新版
+    if (arguments.length == 3)
+    {
+        var url = api + arguments[0];
+        var args = arguments[1];
+        var fun = arguments[2];
+    }
+    else
+    {
+        var url = api + "/" + arguments[0] + "/" + arguments[1];
+        var args = arguments[2];
+        var fun = arguments[3];
+    }
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: args,
+        dataType: "json",
+        success: fun
+    });
+}
+
+
+//
+$(function () {
+
+    //产生公告
+    //var html = '<div style="border:solid 1px #ebccd1; background-color:#f2dede; color:#a94442;width: 960px; height:80px; line-height:80px; text-align:center; margin:auto; margin-top:30px; margin-bottom:30px;">本站因被大量CC攻击导致部分服务资源耗尽无法使用，同时强烈谴责那些恶意CC本站的人，请您好自为之！</div>';
+    //$("body").prepend(html);
+
+    //var html_css = "<style>.mp-tip {position:fixed;left:50%;margin-left:500px;bottom:120px;_display:none;z-index:90;font-family:微软雅黑;}.mp-tip-gotop {display:none;background:#ebebeb;border:solid 1px #dcdcdc;border-radius:1px;height:43px;width:43px;margin-bottom:10px;cursor:pointer;}.mp-tip-gotop-icon {margin:15px 0 0 10px;width:20px;height:20px;border-top:solid 2px #999;border-left:solid 2px #999;-moz-transform:rotate(45deg);content:none;-webkit-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg); filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);}.mp-tip-gotop:hover {border:solid 1px #8e8e8e;background-color:#8e8e8e;}.mp-tip-gotop:hover .mp-tip-gotop-icon {border-top:solid 2px #fff;border-left:solid 2px #fff;}.mp-tip-index {display:block;background:#ebebeb;border:solid 1px #dcdcdc;border-radius:1px;height:43px;width:43px;line-height:43px;color:#666;font-size:12px;text-align:center;margin-bottom:10px;cursor:pointer;}.mp-tip-index:hover {text-decoration:none;color:#fff;border:solid 1px #ff7200;background:#ff7200;}.mp-tip-feedback {display:block;background:#ebebeb;border:solid 1px #dcdcdc;border-radius:1px;height:57px;width:43px;line-height:43px;color:#666;font-size:12px;text-align:center;margin-bottom:10px;cursor:pointer;}.mp-tip-feedback-icon {display:block;width:26px;background:url('') no-repeat;overflow:hidden;text-align:left;zoom:1;width:32px;background-position:-3px -9px;height:25px;line-height:25px;margin:5px auto 0 auto;}.mp-tip-feedback-txt {height:25px;line-height:25px;}.mp-tip-feedback:hover {background:#ff7200;border:solid 1px #ff7200;}.mp-tip-feedback:hover .mp-tip-feedback-icon {background-position:-3px -59px;}.mp-tip-feedback:hover .mp-tip-feedback-txt {color:#fff;}</style>";
+    //var html_js = '<div class="notice"><div class="mp-tip-gotop"><div class="mp-tip-gotop-icon"></div></div><a class="mp-tip-index" href="/index.html" target="_blank">首页</a><div class="mp-tip-feedback"><i class="mp-tip-feedback-icon"></i><p class="mp-tip-feedback-txt">吐槽</p></div></div>';
+    //$("body").append(html_css);
+    //$("body").append(html_js);
+
+    //浮动功能代码
+    var html_css = "<style>.mp-tip {position:fixed;left:50%;margin-left:500px;bottom:120px;_display:none;z-index:90;font-family:微软雅黑;}.mp-tip-gotop {display:none;background:#ebebeb;border:solid 1px #dcdcdc;border-radius:1px;height:43px;width:43px;margin-bottom:10px;cursor:pointer;}.mp-tip-gotop-icon {margin:15px 0 0 10px;width:20px;height:20px;border-top:solid 2px #999;border-left:solid 2px #999;-moz-transform:rotate(45deg);content:none;-webkit-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg); filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);}.mp-tip-gotop:hover {border:solid 1px #8e8e8e;background-color:#8e8e8e;}.mp-tip-gotop:hover .mp-tip-gotop-icon {border-top:solid 2px #fff;border-left:solid 2px #fff;}.mp-tip-index {display:block;background:#ebebeb;border:solid 1px #dcdcdc;border-radius:1px;height:43px;width:43px;line-height:43px;color:#666;font-size:12px;text-align:center;margin-bottom:10px;cursor:pointer;}.mp-tip-index:hover {text-decoration:none;color:#fff;border:solid 1px #ff7200;background:#ff7200;}.mp-tip-feedback {display:block;background:#ebebeb;border:solid 1px #dcdcdc;border-radius:1px;height:57px;width:43px;line-height:43px;color:#666;font-size:12px;text-align:center;margin-bottom:10px;cursor:pointer;}.mp-tip-feedback-icon {display:block;width:26px;background:url('') no-repeat;overflow:hidden;text-align:left;zoom:1;width:32px;background-position:-3px -9px;height:25px;line-height:25px;margin:5px auto 0 auto;}.mp-tip-feedback-txt {height:25px;line-height:25px;}.mp-tip-feedback:hover {background:#ff7200;border:solid 1px #ff7200;}.mp-tip-feedback:hover .mp-tip-feedback-icon {background-position:-3px -59px;}.mp-tip-feedback:hover .mp-tip-feedback-txt {color:#fff;}</style>";
+    var html_js = '<div class="mp-tip"><div class="mp-tip-gotop"><div class="mp-tip-gotop-icon"></div></div><a class="mp-tip-index" href="/index.html" target="_blank">首页</a><div class="mp-tip-feedback"><i class="mp-tip-feedback-icon"></i><p class="mp-tip-feedback-txt">吐槽</p></div></div>';
+    $("body").append(html_css);
+    $("body").append(html_js);
+
+    //背景图
+    var icon = "url(data:image/png;base64,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)";
+    $(".mp-tip-feedback-icon").css("backgroundImage", icon);
+
+    //返回顶部
+    $(".mp-tip-gotop").click(function () {
+        $('body,html').animate({ scrollTop: -100 }, 500);
+    });
+
+    //滚动事件
+    $(window).scroll(function () {
+        if ($(window).scrollTop() > 100) {
+            $(".mp-tip-gotop").fadeIn(200);
+        } else {
+            $(".mp-tip-gotop").fadeOut(200);
+        }
+    });
+
+    //第一次加载设置
+    if ($(window).scrollTop() > 100) {
+        $(".mp-tip-gotop").fadeIn(200);
+    }
+
+    //反馈
+    $(".mp-tip-feedback").click(function () {
+        window.layer.open({
+            type: 2,
+            title: "尽情吐槽吧~~~",
+            closeBtn: 1, //不显示关闭按钮
+            shade: 0,
+            area: ['360px', '230px'],
+            offset: 'rb', //右下角弹出
+            shift: 2,
+            content: ['/feedback/index.html', 'no'] //iframe的url，no代表不显示滚动条
+        });
+    });
+
+    //隐藏首页
+    if (window.location.pathname == "/" || window.location.pathname.substr(0, 11) == "/index.html") {
+        $(".mp-tip-index").hide();
+    }
+
+    //添加layer 应该在click事件内加载，暂时先放着
+    if (typeof (window.layer) == 'undefined') {
+        var html_js = '<script src="//802.oss-cn-shanghai.aliyuncs.com/static/layer-v3.1.1/layer.js"></script>';
+        var html_css = '<link href="//802.oss-cn-shanghai.aliyuncs.com/static/layer-v3.1.1/theme/default/layer.css" rel="stylesheet">';
+        $("body").append(html_css);
+        $("body").append(html_js);
+    }
+
+
+    //复制
+    $("[copy]").click(function () {
+        var copy = $(this).attr("copy");
+        $(copy).focus();
+        $(copy).select();
+        var b = document.execCommand("Copy", false, null);
+        if (b) {
+            if (window.layer) {
+                layer.msg("复制成功！");
+            }
+        }
+    });
+
+    //tab控制
+    $("body").on("click", "[tab-id]", function () {
+        var tab = $(this).parents("[tab-title]").attr("tab-title");
+        var id = $(this).attr("tab-id");
+
+        $(this).parents("[tab-title]").find("[tab-id]").removeClass("active");
+        $(this).addClass("active");
+
+        $("[tab-content='" + tab + "']").find("[tab-id]").removeClass("active");
+        $("[tab-content='" + tab + "']").find("[tab-id='" + id + "']").addClass("active");
+    });
+
+    
+});
